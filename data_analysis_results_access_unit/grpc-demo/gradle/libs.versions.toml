@@ -1,0 +1,25 @@
+[versions]
+grpc = "1.68.2"
+protobuf = "4.29.1"
+
+[plugins]
+lombok = "io.freefair.lombok:8.11"
+protobuf = "com.google.protobuf:0.9.4"
+versions = "com.github.ben-manes.versions:0.51.0"
+
+[libraries]
+# BOMs
+protobuf-bom = { module = "com.google.protobuf:protobuf-bom", version.ref = "protobuf" }
+grpc-bom = { module = "io.grpc:grpc-bom", version.ref = "grpc" }
+junit-bom = "org.junit:junit-bom:5.10.0"
+
+protobuf-javaUtil.module = "com.google.protobuf:protobuf-java-util"
+grpc-protobuf.module = "io.grpc:grpc-protobuf"
+grpc-services.module = "io.grpc:grpc-services"
+grpc-stub.module = "io.grpc:grpc-stub"
+grpc-netty.module = "io.grpc:grpc-netty"
+
+javax-annotationApi = 'javax.annotation:javax.annotation-api:1.3.2'
+
+
+junit-jupiter.module = "org.junit.jupiter:junit-jupiter-api"

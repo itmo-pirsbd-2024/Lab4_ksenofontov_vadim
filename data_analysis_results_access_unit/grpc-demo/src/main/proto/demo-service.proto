@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package itmo.advancedjava.grpcdemo;
+
+option java_package = "ru.itmo.advancedjava.grpcdemo.proto";
+option java_outer_classname = "GrpcUsersTrackerProto";
+option java_multiple_files = true;
+
+service UsersTrackerService {
+  rpc getUserPositions (UserID) returns (stream Position);
+  rpc getUserPulse (UserID) returns (stream Pulse);
+  rpc getUserAvgSpeed (UserID) returns (stream AvgSpeed);
+  rpc getMostFilledSectors (UserID) returns (stream MostFilledSectors);
+}
+
+message UserID {
+  int64 id = 1;
+}
+
+message Position {
+  int32 x = 1;
+  int32 y = 2;
+}
+
+message Pulse {
+  int32 value = 1;
+}
+
+message AvgSpeed {
+  double x = 1;
+  double y = 2;
+  double z = 3;
+  double avg_scalar_m_per_s = 4;
+}
+
+message MostFilledSectors {
+  repeated Sector sectors = 1;
+}
+
+message Sector {
+  int32 x = 1;
+  int32 y = 2;
+  int64 messages_got = 3;
+}
