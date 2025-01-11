@@ -1,0 +1,73 @@
+plugins {
+    id 'application'
+    alias libs.plugins.protobuf
+    alias libs.plugins.lombok
+    alias libs.plugins.versions
+}
+
+group = 'ru.itmo.advanced-java'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+compileJava {
+    options.release = 21
+    options.encoding = 'UTF-8'
+}
+
+dependencies {
+    implementation(
+            platform(libs.protobuf.bom),
+            platform(libs.grpc.bom),
+
+            libs.protobuf.javaUtil,
+
+            libs.grpc.protobuf,
+            libs.grpc.services,
+            libs.grpc.stub,
+            libs.grpc.netty,
+    )
+
+    // https://mvnrepository.com/artifact/org.apache.kafka/kafka-clients
+    implementation group: 'org.apache.kafka', name: 'kafka-clients', version: '3.9.0'
+
+
+    // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.0.1'
+
+
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-gradle-plugin
+    implementation group: 'org.springframework.boot', name: 'spring-boot-gradle-plugin', version: '3.3.7'
+
+
+    compileOnly(libs.javax.annotationApi)
+
+    testImplementation(
+            platform(libs.junit.bom),
+            libs.junit.jupiter,
+    )
+}
+
+protobuf {
+    def suffix = osdetector.os == "osx" ? ":osx-x86_64" : ""
+
+    protoc {
+        artifact = "com.google.protobuf:protoc:${libs.versions.protobuf.get()}" + suffix
+    }
+    plugins {
+        grpc.artifact = "io.grpc:protoc-gen-grpc-java:${libs.versions.grpc.get()}" + suffix
+    }
+
+    generateProtoTasks {
+        all().each { task ->
+            task.plugins { grpc {} }
+        }
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
